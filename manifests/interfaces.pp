@@ -1,4 +1,22 @@
 # Manages /etc/network/interfaces file
+# Example using VLAN networking with the management interface also acting as the public interface.
+#node /<node_name>/ inherits base {
+#
+#  # Configure /etc/network/interfaces file
+#  class { 'networking::interfaces-new':
+#    # Node Types: controller, compute, swift-proxy, or swift-storage
+#    node_type           => compute,
+#    mgt_is_public       => true,
+#    vlan_networking     => true,
+#    vlan_interface      => "eth0",
+#    mgt_interface       => "eth0",
+#    mgt_ip              => "192.168.220.53",
+#    mgt_gateway         => "192.168.220.1",
+#    flat_vlan           => "221",
+#    dns_servers         => "192.168.220.254",
+#    dns_search          => "dmz-pod2.lab",
+# }
+#}
 
 class networking::interfaces(
         $node_type,
