@@ -3,7 +3,7 @@
 #node /<node_name>/ inherits base {
 #
 #  # Configure /etc/network/interfaces file
-#  class { 'networking::interfaces-new':
+#  class { 'networking::interfaces':
 #    # Node Types: controller, compute, swift-proxy, or swift-storage
 #    node_type           => compute,
 #    mgt_is_public       => true,
