@@ -1,0 +1,23 @@
+#######DO NOT EDIT##########################
+#######This file is managed by Puppet#######
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+auto <%= mgt_interface %>
+iface <%= mgt_interface %> inet static
+        address <%= mgt_ip %>
+        netmask <%= mgt_mask %>
+        gateway <%= mgt_gateway %>        
+        # dns-* options are implemented by the resolvconf package, if installed
+        dns-nameservers <%= dns_servers %>
+        dns-search <%= dns_search %>
+
+# Compute Node- Private (Flat Networking) Network Interface
+auto <%= vlan_interface %>.<%= flat_vlan %>
+iface <%= vlan_interface %>.<%= flat_vlan %> inet manual
+        vlan-raw-device <%= vlan_interface %>
+	up ifconfig <%= vlan_interface %>.<%= flat_vlan %> 0.0.0.0 up

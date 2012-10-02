@@ -1,0 +1,29 @@
+#######DO NOT EDIT##########################
+#######This file is managed by Puppet#######
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+auto <%= mgt_interface %>
+iface <%= mgt_interface %> inet static
+        address <%= mgt_ip %>
+        netmask <%= mgt_mask %>
+        gateway <%= mgt_gateway %>        
+        # dns-* options are implemented by the resolvconf package, if installed
+        dns-nameservers <%= dns_servers %>
+        dns-search <%= dns_search %>
+
+# Swift Proxy Node- Public Network Interface
+auto <%= public_interface %>
+iface <%= public_interface %> inet static
+        address <%= proxy_ip %>
+        netmask <%= proxy_mask %>
+
+# Swift Proxy Node- Private Storage Network Interface
+auto <%= storage_interface %>
+iface <%= storage_interface %> inet static
+        address <%= storage_ip %>
+        netmask <%= storage_mask %>
