@@ -44,13 +44,13 @@ Here is a sample compute node definition that calls the networking::interfaces c
     flat_interface      => "eth1",
     dns_servers         => "192.168.220.254",
     dns_search          => "dmz-pod2.lab",
- }
-}
+     }
+    }
 
 Here is a sample controller node definition that calls the networking::interfaces class.  This example uses physcial interface (eth0 and eth1) to seperate the private (Nova Flat) network from the public/management network.  The primary difference between compute and controller is assigning an IP address to the flat interface.
 
-  # Configure /etc/network/interfaces file
-  class { 'networking::interfaces':
+    # Configure /etc/network/interfaces file
+    class { 'networking::interfaces':
     # Node Types: controller, compute, swift-proxy, or swift-storage
     node_type           => compute,
     mgt_is_public       => true,
@@ -62,8 +62,8 @@ Here is a sample controller node definition that calls the networking::interface
     #add flat_mask if the net is not a /24
     dns_servers         => "192.168.220.254",
     dns_search          => "dmz-pod2.lab",
- }
-}
+     }
+    }
 
 OPTIONAL: When using the networking::interfaces class, you are no longer required to define ip and domain within cobbler::node of the cobbler-nodes.pp file.  Here is an example cobbler::node node definition:
 
