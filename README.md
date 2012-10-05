@@ -1,7 +1,4 @@
-This is a puppet module to configure /etc/network/interfaces for OpenStack deployments.
-Additional module documentation is coming.
-
-The networking::interfaces supports the following node types:
+This is a puppet module to configure /etc/network/interfaces for OpenStack deployments.  The networking::interfaces class supports the following node types:
 
    A. Controller
  
