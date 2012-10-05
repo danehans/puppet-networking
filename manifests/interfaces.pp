@@ -1,8 +1,37 @@
-# Manages /etc/network/interfaces file
-# Example using VLAN networking with the management interface also acting as the public interface.
+# The networking::interfaces class manages /etc/network/interfaces file parameters.
+# The class is focused on Ubuntu-based OpenStack deployments, but it can be extended to support various requirements.
+#
+# Parameters:
+# - $node_type (required) Specifies the OpenStack node type.  Options are: controller, compute, swift-proxy, swift-storage.
+# - $vlan_networking set to true if you are using VLAN's for private/public networks.
+# - $mgt_is_public set to true if the management interface (i.e. eth0) will also act as the OpenStack public network.
+# - $vlan_interface specifies which interface is being used for VLAN networking.
+# - $mgt_interface specifies which interface is being used to manage the node.
+# - $mgt_ip (required) specifies the IP address that will be assigned to the management interface.
+# - $mgt_mask the netmask of the management interface
+# - $mgt_gateway the default gateway for the management network.
+# - $flat_interface (required for compute/controller $node_type) specifies the nova networking flat interface.
+# - $flat_vlan (required for compute/controller $node_type with $vlan_networking = true) specifies the nova networking flat VLAN.
+# - $flat_ip (required for controller $node_type) specifies the nova networking flat interface ip address.
+# - $flat_mask (required for controller $node_type) specifies the nova networking flat interface netmask.
+# - $proxy_interface (required for swift-proxy $node_type) specifies the Swift Proxy interface.
+# - $proxy_vlan (required for swift-proxy $node_type with $vlan_networking = true) specifies the Swift Proxy VLAN.
+# - $proxy_ip (required for swift-proxy $node_type) specifies the Swift Proxy interface ip address.
+# - $proxy_mask (required for swift-proxy $node_type) specifies the Swift Proxy interface netmask.
+# - $public_interface (required for compute $node_type) specifies the nova networking public interface.
+# - $public_vlan (required for compute $node_type with $vlan_networking = true) specifies the nova networking Public VLAN.
+# - $public_ip (required for compute $node_type) specifies the nova networking Public interface ip address.
+# - $public_mask (required for compute $node_type) specifies the nova networking Public interface netmask.
+# - $storage_interface (required for swift-storage $node_type) specifies the Swift Storage interface.
+# - $storage_vlan (required for swift-storage $node_type with $vlan_networking = true) specifies the Swift storage VLAN.
+# - $storage_ip (required for swift-storage $node_type) specifies the Swift storage interface ip address.
+# - $storage_mask (required for swift-storage $node_type) specifies the Swift storage interface netmask.
+# - $dns_servers (required) specifies the IP address(es) of DNS name servers.
+# - $dns_search (required) specifies the DNS suffix of Node FQDN.
+#
+# This Compute Node example uses VLAN networking with the management interface also acting as the public interface.
 #node /<node_name>/ inherits base {
 #
-#  # Configure /etc/network/interfaces file
 #  class { 'networking::interfaces':
 #    # Node Types: controller, compute, swift-proxy, or swift-storage
 #    node_type           => compute,
