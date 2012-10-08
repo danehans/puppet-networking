@@ -1,12 +1,14 @@
 This is a puppet module to configure /etc/network/interfaces for OpenStack deployments.  The networking::interfaces class supports the following node types:
 
-   A. Controller
+   A. controller
  
-   B. Compute
+   B. compute
  
-   C. Swift Proxy
+   C. swift-proxy
  
-   D. Swift Storage
+   D. swift-storage
+
+   E. load-balancer
 
 Here is a sample compute node definition that calls the networking::interfaces class.  This example uses VLANs (100) to seperate the private (Nova Flat) network from the public/management network.
 
@@ -14,7 +16,7 @@ Here is a sample compute node definition that calls the networking::interfaces c
     node /<compute_node>/ {
 
       class { 'networking::interfaces':
-      # Node Types: controller, compute, swift-proxy, or swift-storage
+      # Node Types: controller, compute, swift-proxy, swift-storage, or load-balancer
         node_type           => compute,
         mgt_is_public       => true,
         vlan_networking     => true,
@@ -32,7 +34,7 @@ Here is a sample compute node definition that calls the networking::interfaces c
 
     # Configure /etc/network/interfaces file
     class { 'networking::interfaces':
-    # Node Types: controller, compute, swift-proxy, or swift-storage
+    # Node Types: controller, compute, swift-proxy, swift-storage, or load-balancer
     node_type           => compute,
     mgt_is_public       => true,
     mgt_interface       => "eth0",
@@ -48,7 +50,7 @@ Here is a sample controller node definition that calls the networking::interface
 
     # Configure /etc/network/interfaces file
     class { 'networking::interfaces':
-    # Node Types: controller, compute, swift-proxy, or swift-storage
+    # Node Types: controller, compute, swift-proxy, swift-storage, or load-balancer
     node_type           => compute,
     mgt_is_public       => true,
     mgt_interface       => "eth0",
@@ -57,6 +59,21 @@ Here is a sample controller node definition that calls the networking::interface
     flat_interface      => "eth1",
     flat_ip             => "<ipaddrofnovaflat_net>"
     #add flat_mask if the net is not a /24
+    dns_servers         => "192.168.220.254",
+    dns_search          => "dmz-pod2.lab",
+     }
+    }
+
+Here is a sample load-balancer node definition that calls the networking::interfaces class.  This example uses physcial interface (eth0) as the management and interface used for load-balancing traffic.
+
+    # Configure /etc/network/interfaces file
+    class { 'networking::interfaces':
+    # Node Types: controller, compute, swift-proxy, swift-storage, or load-balancer
+    node_type           => load-balancer,
+    mgt_is_public       => true,
+    mgt_interface       => "eth0",
+    mgt_ip              => "192.168.200.100",
+    mgt_gateway         => "192.168.200.1",
     dns_servers         => "192.168.220.254",
     dns_search          => "dmz-pod2.lab",
      }

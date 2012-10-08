@@ -26,6 +26,10 @@
 # - $storage_vlan (required for swift-storage $node_type with $vlan_networking = true) specifies the Swift storage VLAN.
 # - $storage_ip (required for swift-storage $node_type) specifies the Swift storage interface ip address.
 # - $storage_mask (required for swift-storage $node_type) specifies the Swift storage interface netmask.
+# - $slb_interface (required for load-balancer $node_type) specifies the dedicated load-balancer interface.
+# - $slb_vlan (required for load-balancer $node_type with $vlan_networking = true) specifies the dedicated load-balancer VLAN.
+# - $slb_ip (required for load-balancer $node_type) specifies the dedicated load-balancer ip address.
+# - $slb_mask (required for load-balancer $node_type) specifies the dedicated load-balancer interface netmask.
 # - $dns_servers (required) specifies the IP address(es) of DNS name servers.
 # - $dns_search (required) specifies the DNS suffix of Node FQDN.
 #
@@ -72,6 +76,10 @@ class networking::interfaces(
         $storage_vlan      = undef,
         $storage_ip        = undef,
         $storage_mask      = '255.255.255.0',
+        $slb_interface     = undef,
+        $slb_vlan          = undef,
+        $slb_ip            = undef,
+        $slb_mask          = '255.255.255.0',  
         $dns_servers,
         $dns_search)
 {
