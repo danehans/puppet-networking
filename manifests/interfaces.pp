@@ -64,7 +64,7 @@ class networking::interfaces(
 	$flat_vlan         = undef,
 	$flat_ip           = undef,
         $flat_mask         = '255.255.255.0',
-        proxy_interface   = undef,
+        $proxy_interface   = undef,
         $proxy_vlan        = undef,
         $proxy_ip          = undef,
 	$proxy_mask        = '255.255.255.0',
@@ -102,6 +102,32 @@ class networking::interfaces(
     refreshonly => true,
     path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
   }
+  
+  # Remove DHCP Lease
+  exec { 'dhcp-lease-remove':
+    command     => 'dhclient -r',
+    onlyif      => 'ps -ef | grep dhclient',
+    logoutput   => on_failure,
+    subscribe   => Exec['network-restart'],
+    refreshonly => true,
+    path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
+  }
+
+  # Remove Any DHCP Processes
+  exec { 'dhcp-process-remove':
+    command     => 'killall dhclient3',
+    onlyif      => 'ps -ef | grep dhclient',
+    logoutput   => on_failure,
+    subscribe   => Exec['dhcp-lease-remove'],
+    refreshonly => true,
+    path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
+  }
+
+  # Remove DHCP Client Package  
+  package { "isc-dhcp-client" :
+    ensure      => absent,
+    require     => Exec['dhcp-lease-remove'],
+  }
  } 
 
  elsif ($vlan_networking == true) and ($mgt_is_public == true) {
@@ -121,6 +147,32 @@ class networking::interfaces(
     subscribe   => File["/etc/network/interfaces"],
     refreshonly => true,
     path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
+  }
+ 
+  # Remove DHCP Lease
+  exec { 'dhcp-lease-remove':
+    command     => 'dhclient -r',
+    onlyif      => 'ps -ef | grep dhclient',
+    logoutput   => on_failure,
+    subscribe   => Exec['network-restart'],
+    refreshonly => true,
+    path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
+  }
+ 
+  # Remove Any DHCP Processes
+  exec { 'dhcp-process-remove':
+    command     => 'killall dhclient3',
+    onlyif      => 'ps -ef | grep dhclient',
+    logoutput   => on_failure,
+    subscribe   => Exec['dhcp-lease-remove'],
+    refreshonly => true,
+    path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
+  }
+ 
+  # Remove DHCP Client Package  
+  package { "isc-dhcp-client" :
+    ensure      => absent,
+    require     => Exec['dhcp-lease-remove'],
   }
  }
 
@@ -142,6 +194,33 @@ class networking::interfaces(
     refreshonly => true,
     path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
   }
+ 
+  # Remove DHCP Lease
+  exec { 'dhcp-lease-remove':
+    command     => 'dhclient -r',
+    onlyif      => 'ps -ef | grep dhclient',
+    logoutput   => on_failure,
+    subscribe   => Exec['network-restart'],
+    refreshonly => true,
+    path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
+  }
+
+  # Remove Any DHCP Processes
+  exec { 'dhcp-process-remove':
+    command     => 'killall dhclient3',
+    onlyif      => 'ps -ef | grep dhclient',
+    logoutput   => on_failure,
+    subscribe   => Exec['dhcp-lease-remove'],
+    refreshonly => true,
+    path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
+  }
+
+  # Remove DHCP Client Package  
+  package { "isc-dhcp-client" :
+    ensure      => absent,
+    require     => Exec['dhcp-lease-remove'],
+  }
+
  } else {
   
   #use template to manage /network/interfaces file
@@ -159,6 +238,32 @@ class networking::interfaces(
     subscribe   => File["/etc/network/interfaces"],
     refreshonly => true,
     path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
+  }
+
+  # Remove DHCP Lease
+  exec { 'dhcp-lease-remove':
+    command     => 'dhclient -r',
+    onlyif      => 'ps -ef | grep dhclient',
+    logoutput   => on_failure,
+    subscribe   => Exec['network-restart'],
+    refreshonly => true,
+    path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
+  }
+
+  # Remove Any DHCP Processes
+  exec { 'dhcp-process-remove':
+    command     => 'killall dhclient3',
+    onlyif      => 'ps -ef | grep dhclient',
+    logoutput   => on_failure,
+    subscribe   => Exec['dhcp-lease-remove'],
+    refreshonly => true,
+    path        => '/sbin/:/usr/sbin/:/usr/bin/:/bin/',
+  }
+
+  # Remove DHCP Client Package  
+  package { "isc-dhcp-client" :
+    ensure      => absent,
+    require     => Exec['dhcp-lease-remove'],
   }
  }
 }
